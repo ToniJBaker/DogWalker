@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.Razor;
 
 namespace DogWalker
 {
@@ -27,6 +28,8 @@ namespace DogWalker
             services.AddControllersWithViews();
             services.AddTransient<IWalkerRepository, WalkerRepository>();
             services.AddTransient<IOwnerRepository, OwnerRepository>();
+            services.AddTransient<IDogRepository, DogRepository>();
+
 
         }
 
