@@ -1,6 +1,7 @@
 ﻿using DogWalker.Models;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 
 namespace DogWalker.Repositories
@@ -28,7 +29,7 @@ namespace DogWalker.Repositories
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                        SELECT Id, [Name], OwnerId, Breed
+                        SELECT Id, [Name], OwnerId, Breed, Notes, ImageUrl
                         FROM Dog
                     ";
 
@@ -43,8 +44,26 @@ namespace DogWalker.Repositories
                             Name = reader.GetString(reader.GetOrdinal("Name")),
                             OwnerId = reader.GetInt32(reader.GetOrdinal("OwnerId")),
                             Breed = reader.GetString(reader.GetOrdinal("Breed")),
-                        };
+                        
+                        
 
+                    };
+                        if (!reader.IsDBNull(reader.GetOrdinal("Notes")))
+                        {
+                            singleDog.Notes = reader.GetString(reader.GetOrdinal("Notes"));
+                        }
+                        else 
+                        {
+                            singleDog.Notes="null";
+                        }
+                        if (!reader.IsDBNull(reader.GetOrdinal("Notes")))
+                        {
+                            singleDog.ImageUrl = reader.GetString(reader.GetOrdinal("ImageUrl"));
+                        }
+                        else
+                        {
+                            singleDog.ImageUrl="null";
+                        }
                         dogs.Add(singleDog);
                     }
 
@@ -63,7 +82,7 @@ namespace DogWalker.Repositories
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                        SELECT Id, [Name],OwnerId, Breed
+                        SELECT Id, [Name],OwnerId, Breed, Notes, ImageUrl
                         FROM Dog
                         WHERE Id = @id
                     ";
@@ -82,6 +101,23 @@ namespace DogWalker.Repositories
                             Breed = reader.GetString(reader.GetOrdinal("Breed")),
                            
                         };
+                        if (!reader.IsDBNull(reader.GetOrdinal("Notes")))
+                        {
+                            dog.Notes = reader.GetString(reader.GetOrdinal("Notes"));
+                        }
+                        else
+                        {
+                            dog.Notes = "null";
+                        }
+                        if (!reader.IsDBNull(reader.GetOrdinal("Notes")))
+                        {
+                            dog.ImageUrl = reader.GetString(reader.GetOrdinal("ImageUrl"));
+                        }
+                        else
+                        {
+                            dog.ImageUrl= "null";
+                        }
+                       
 
                         reader.Close();
                         return dog;
@@ -103,15 +139,17 @@ namespace DogWalker.Repositories
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                    INSERT INTO Dog ([Name], OwnerId, Breed)
+                    INSERT INTO Dog ([Name], OwnerId, Breed, Notes, ImageUrl)
                     OUTPUT INSERTED.ID
-                    VALUES (@name, @ownerId, @breed);
+                    VALUES (@name, @ownerId, @breed, @notes, @imageUrl);
                 ";
 
                     cmd.Parameters.AddWithValue("@name", dog.Name);
                     cmd.Parameters.AddWithValue("@ownerId", dog.OwnerId);
                     cmd.Parameters.AddWithValue("@breed", dog.Breed);
-                    
+                    cmd.Parameters.AddWithValue("@notes", dog.Notes); 
+                    cmd.Parameters.AddWithValue("@imageUrl", dog.ImageUrl);
+
                     int id = (int)cmd.ExecuteScalar();
 
                     dog.Id = id;
@@ -132,13 +170,18 @@ namespace DogWalker.Repositories
                             SET 
                                 [Name] = @name, 
                                 OwnerId = @ownerId, 
-                                Breed = @breed, 
+                                Breed = @breed,
+                                Notes = @notes,
+                                ImageUrl = @imageUrl
                             WHERE Id = @id";
 
                     cmd.Parameters.AddWithValue("@name", dog.Name);
                     cmd.Parameters.AddWithValue("@ownerId", dog.OwnerId);
                     cmd.Parameters.AddWithValue("@breed", dog.Breed);
                     cmd.Parameters.AddWithValue("@id", dog.Id);
+                    cmd.Parameters.AddWithValue("@notes", dog.Notes);
+                    cmd.Parameters.AddWithValue("@imageUrl", dog.ImageUrl);
+
 
                     cmd.ExecuteNonQuery();
                 }

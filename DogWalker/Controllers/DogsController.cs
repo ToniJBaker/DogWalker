@@ -79,7 +79,7 @@ namespace DogWalker.Controllers
             }
             catch(Exception ex)
             {
-                return View();
+                return View(dog);
             }
         }
 
