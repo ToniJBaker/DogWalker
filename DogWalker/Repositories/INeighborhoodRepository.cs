@@ -10,5 +10,6 @@ namespace DogWalker.Repositories
         void AddNeighborhood(Neighborhood neighborhood);
         void UpdateNeighborhood(Neighborhood neighborhood);
         void DeleteNeighborhood(int id);
+       
     }
 }

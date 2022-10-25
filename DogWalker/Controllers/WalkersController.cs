@@ -1,4 +1,5 @@
 ﻿using DogWalker.Models;
+using DogWalker.Models.ViewModels;
 using DogWalker.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,11 +10,14 @@ namespace DogWalker.Controllers
     public class WalkersController : Controller
     {
         private readonly IWalkerRepository _walkerRepo;
+        private readonly INeighborhoodRepository _neighborhoodRepo;
+        
 
         // ASP.NET will give us an instance of our Walker Repository. This is called "Dependency Injection"
-        public WalkersController(IWalkerRepository walkerRepository)
+        public WalkersController(IWalkerRepository walkerRepository, INeighborhoodRepository nighborhoodRepository)
         {
             _walkerRepo = walkerRepository;
+            _neighborhoodRepo = nighborhoodRepository;
         }
         // GET: WalkersController
         public ActionResult Index()
@@ -27,10 +31,12 @@ namespace DogWalker.Controllers
         {
             Walker walker = _walkerRepo.GetWalkerById(id);
 
+
             if (walker == null)
             {
                 return NotFound();
             }
+
             return View(walker);
         }
 
