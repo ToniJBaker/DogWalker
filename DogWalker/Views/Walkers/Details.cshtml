@@ -64,7 +64,7 @@
         </div>
         <div>
             <label class="font-weight-bold">Neighborhood:</label>
-            <span> @Html.DisplayFor(model => model.NeighborhoodId)</span>
+            <span> @Html.DisplayFor(model => model.Neighborhood.Name)</span>
         </div>
     </section>
 </div>
@@ -72,5 +72,6 @@
     @Html.ActionLink("Edit", "Edit", new {  id = Model.Id  }) |
     <a asp-action="Index">Back to List</a>
     <hr />
+    <h1>Recent Walks</h1>
 </div>
 

@@ -44,10 +44,8 @@ namespace DogWalker.Repositories
                             Name = reader.GetString(reader.GetOrdinal("Name")),
                             OwnerId = reader.GetInt32(reader.GetOrdinal("OwnerId")),
                             Breed = reader.GetString(reader.GetOrdinal("Breed")),
-                        
-                        
 
-                    };
+                        };
                         if (!reader.IsDBNull(reader.GetOrdinal("Notes")))
                         {
                             singleDog.Notes = reader.GetString(reader.GetOrdinal("Notes"));

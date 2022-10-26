@@ -32,7 +32,7 @@ namespace DogWalker.Repositories
                 {
                     cmd.CommandText = @"
                         SELECT Id, [Name], ImageUrl, NeighborhoodId
-                        FROM Walker
+                        FROM Walker 
                     ";
 
                     SqlDataReader reader = cmd.ExecuteReader();
@@ -46,6 +46,7 @@ namespace DogWalker.Repositories
                             Name = reader.GetString(reader.GetOrdinal("Name")),
                             ImageUrl = reader.GetString(reader.GetOrdinal("ImageUrl")),
                             NeighborhoodId = reader.GetInt32(reader.GetOrdinal("NeighborhoodId"))
+                            
                         };
 
                         walkers.Add(walker);
@@ -66,7 +67,7 @@ namespace DogWalker.Repositories
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                        SELECT w.Id, w.Name, w.ImageUrl, w.NeighborhoodId, n.Name 
+                        SELECT w.Id, w.Name, w.ImageUrl, w.NeighborhoodId, n.Name AS 'Neighborhood'
                         FROM Walker w
                         LEFT JOIN Neighborhood n ON w.NeighborhoodId = n.Id
                         WHERE w.Id = @id
@@ -84,7 +85,11 @@ namespace DogWalker.Repositories
                             Name = reader.GetString(reader.GetOrdinal("Name")),
                             ImageUrl = reader.GetString(reader.GetOrdinal("ImageUrl")),
                             NeighborhoodId = reader.GetInt32(reader.GetOrdinal("NeighborhoodId")),
-                            Neighborhood = reader.GetString(reader.GetOrdinal("Name"))
+                            Neighborhood = new Neighborhood
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("NeighborhoodId")),
+                                Name = reader.GetString(reader.GetOrdinal("Neighborhood"))
+                            }
                         };
 
                         reader.Close();
