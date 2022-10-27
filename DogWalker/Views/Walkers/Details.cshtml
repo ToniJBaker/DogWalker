@@ -1,4 +1,5 @@
-﻿@model DogWalker.Models.Walker
+﻿@*@model DogWalker.Models.Walker*@
+@model DogWalker.Models.ViewModels.WalkerDetailsViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -50,7 +51,7 @@
     <section>
         <div class="col-sm-2">
             @*@Html.DisplayNameFor(model => model.ImageUrl)*@
-            <img style="width:100px;float:left;margin-right:20px" class="bg-info" src="@Model.ImageUrl" alt="avatar" />
+            <img style="width:100px;float:left;margin-right:20px" class="bg-info" src="@Model.Walker.ImageUrl" alt="avatar" />
         </div>
         @*<dt class = "col-sm-2">
         @Html.DisplayNameFor(model => model.Id)
@@ -60,18 +61,36 @@
         </dd>*@
         <div>
             <label class="font-weight-bold">Name:</label>
-            <span> @Html.DisplayFor(model => model.Name)</span>
+            <span> @Html.DisplayFor(model => model.Walker.Name)</span>
         </div>
         <div>
             <label class="font-weight-bold">Neighborhood:</label>
-            <span> @Html.DisplayFor(model => model.Neighborhood.Name)</span>
+            <span> @Html.DisplayFor(model => model.Walker.Neighborhood.Name)</span>
         </div>
     </section>
 </div>
 <div>
-    @Html.ActionLink("Edit", "Edit", new {  id = Model.Id  }) |
+    @Html.ActionLink("Edit", "Edit", new {  id = Model.Walker.Id  }) |
     <a asp-action="Index">Back to List</a>
     <hr />
     <h1>Recent Walks</h1>
+    <ul class="list-group mt-4">
+        @foreach (Walk walk in Model.Walks)
+        {
+            <div>
+                <label class="font-weight-bold">Date:</label>
+                <span>@walk.Date</span>
+            </div>
+            <div>
+                <label class="font-weight-bold">Client:</label>
+                <span>@walk.Dog.Owner.Name</span>
+            </div>
+            <div>
+                <label class="font-weight-bold">Duration:</label>
+                <span>@walk.Duration</span>
+            </div>
+        }
+        
+    </ul>
 </div>
 

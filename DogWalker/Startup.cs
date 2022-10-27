@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Razor;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace DogWalker
 {
@@ -26,11 +27,15 @@ namespace DogWalker
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            
             services.AddTransient<IWalkerRepository, WalkerRepository>();
             services.AddTransient<IOwnerRepository, OwnerRepository>();
             services.AddTransient<IDogRepository, DogRepository>();
             services.AddTransient<INeighborhoodRepository, NeighborhoodRepository>();
             services.AddTransient<IWalkRepository, WalkRepository>();
+            
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+        .AddCookie(options => options.LoginPath = "/Owners/LogIn");
 
 
 
@@ -55,6 +60,7 @@ namespace DogWalker
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

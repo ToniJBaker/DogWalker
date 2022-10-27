@@ -31,7 +31,7 @@ namespace DogWalker.Repositories
                 {
                     cmd.CommandText = @"
                         SELECT Id, Duration, Date, WalkerId, DogId
-                        FROM Walks
+                        FROM Walks 
                     ";
 
                     SqlDataReader reader = cmd.ExecuteReader();
@@ -45,8 +45,7 @@ namespace DogWalker.Repositories
                             Duration = reader.GetInt32(reader.GetOrdinal("Duration")),
                             Date = reader.GetDateTime(reader.GetOrdinal("Date")),
                             WalkerId = reader.GetInt32(reader.GetOrdinal("WalkerId")),
-                            DogId = reader.GetInt32(reader.GetOrdinal("DogId"))
-
+                            DogId = reader.GetInt32(reader.GetOrdinal("DogId")),
                         };
 
                         walks.Add(walk);
@@ -67,8 +66,10 @@ namespace DogWalker.Repositories
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                SELECT Id, Duration, Date, WalkerId, DogId
-                FROM Walks
+                SELECT w.Id, w.Date, w.Duration, w.WalkerId, w.DogId, o.Name
+                FROM Walks w
+                Left JOIN Dog d ON w.DogId = d.Id 
+                LEFT JOIN Owner o ON d.OwnerId = o.Id 
                 WHERE WalkerId = @walkerId
             ";
 
@@ -85,8 +86,25 @@ namespace DogWalker.Repositories
                             Duration = reader.GetInt32(reader.GetOrdinal("Duration")),
                             Date = reader.GetDateTime(reader.GetOrdinal("Date")),
                             WalkerId = reader.GetInt32(reader.GetOrdinal("WalkerId")),
-                            DogId = reader.GetInt32(reader.GetOrdinal("DogId"))
-
+                            DogId = reader.GetInt32(reader.GetOrdinal("DogId")),
+                            Dog = new Dog
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                                Name = reader.GetString(reader.GetOrdinal("Name")),
+                                OwnerId = reader.GetInt32(reader.GetOrdinal("OwnerId")),
+                                Breed = reader.GetString(reader.GetOrdinal("Breed")),
+                                Notes = reader.GetString(reader.GetOrdinal("Notes")),
+                                ImageUrl = reader.GetString(reader.GetOrdinal("ImageUrl")),
+                                Owner = new Owner
+                                {
+                                    Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                                    Name = reader.GetString(reader.GetOrdinal("Name")),
+                                    NeighborhoodId = reader.GetInt32(reader.GetOrdinal("NeighborhoodId")),
+                                    Email = reader.GetString(reader.GetOrdinal("Email")),
+                                    Address = reader.GetString(reader.GetOrdinal("Address")),
+                                    Phone = reader.GetString(reader.GetOrdinal("Phone"))
+                                }
+                            }
                         };
 
                         walks.Add(walk);
@@ -98,6 +116,7 @@ namespace DogWalker.Repositories
                 }
             }
         }
+       
     }
 
 }

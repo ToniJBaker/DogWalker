@@ -1,8 +1,14 @@
-﻿namespace DogWalker.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace DogWalker.Models
 {
     public class Owner
     {
         public int Id { get; set; }
+        
+        
+        [EmailAddress]
+        [Required(ErrorMessage ="Enter valid email address.")]
         public string Email { get; set; }
 
         public string Name { get; set; }

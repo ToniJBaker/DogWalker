@@ -10,9 +10,11 @@ namespace DogWalker.Controllers
     {
 
         private readonly IWalkRepository _walkRepo;
+        
         public WalkController(IWalkRepository walkRepository)
         {
             _walkRepo = walkRepository;
+            
             
         }
 
@@ -26,6 +28,7 @@ namespace DogWalker.Controllers
         // GET: WalksController/Details/5
         public ActionResult Details(int id)
         {
+            
             return View();
         }
 
