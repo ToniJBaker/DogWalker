@@ -66,7 +66,9 @@ namespace DogWalker.Repositories
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                SELECT w.Id, w.Date, w.Duration, w.WalkerId, w.DogId, o.Name
+                SELECT w.Id, w.Date, w.Duration, w.WalkerId, w.DogId, 
+                d.Id, d.OwnerId, d.Name AS 'Dog Name', d.Breed,  
+                o.Id, o.Name AS 'Owner Name', o.NeighborhoodId, o.Email, o.Address, o.Phone
                 FROM Walks w
                 Left JOIN Dog d ON w.DogId = d.Id 
                 LEFT JOIN Owner o ON d.OwnerId = o.Id 
@@ -90,15 +92,13 @@ namespace DogWalker.Repositories
                             Dog = new Dog
                             {
                                 Id = reader.GetInt32(reader.GetOrdinal("DogId")),
-                                Name = reader.GetString(reader.GetOrdinal("Name")),
+                                Name = reader.GetString(reader.GetOrdinal("Dog Name")),
                                 OwnerId = reader.GetInt32(reader.GetOrdinal("OwnerId")),
                                 Breed = reader.GetString(reader.GetOrdinal("Breed")),
-                                Notes = reader.GetString(reader.GetOrdinal("Notes")),
-                                ImageUrl = reader.GetString(reader.GetOrdinal("ImageUrl")),
                                 Owner = new Owner
                                 {
                                     Id = reader.GetInt32(reader.GetOrdinal("OwnerId")),
-                                    Name = reader.GetString(reader.GetOrdinal("Name")),
+                                    Name = reader.GetString(reader.GetOrdinal("Owner Name")),
                                     NeighborhoodId = reader.GetInt32(reader.GetOrdinal("NeighborhoodId")),
                                     Email = reader.GetString(reader.GetOrdinal("Email")),
                                     Address = reader.GetString(reader.GetOrdinal("Address")),
