@@ -89,7 +89,7 @@ namespace DogWalker.Repositories
                             DogId = reader.GetInt32(reader.GetOrdinal("DogId")),
                             Dog = new Dog
                             {
-                                Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                                Id = reader.GetInt32(reader.GetOrdinal("DogId")),
                                 Name = reader.GetString(reader.GetOrdinal("Name")),
                                 OwnerId = reader.GetInt32(reader.GetOrdinal("OwnerId")),
                                 Breed = reader.GetString(reader.GetOrdinal("Breed")),
@@ -97,7 +97,7 @@ namespace DogWalker.Repositories
                                 ImageUrl = reader.GetString(reader.GetOrdinal("ImageUrl")),
                                 Owner = new Owner
                                 {
-                                    Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                                    Id = reader.GetInt32(reader.GetOrdinal("OwnerId")),
                                     Name = reader.GetString(reader.GetOrdinal("Name")),
                                     NeighborhoodId = reader.GetInt32(reader.GetOrdinal("NeighborhoodId")),
                                     Email = reader.GetString(reader.GetOrdinal("Email")),

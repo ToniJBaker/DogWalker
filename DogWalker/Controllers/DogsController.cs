@@ -1,5 +1,6 @@
 ﻿using DogWalker.Models;
 using DogWalker.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -18,6 +19,7 @@ namespace DogWalker.Controllers
             _dogRepo = dogRepository;
         }
         // GET: DogController
+        [Authorize]
         public ActionResult Index()
         {
             int ownerId = GetCurrentUserId();
@@ -37,6 +39,7 @@ namespace DogWalker.Controllers
         }
 
         // GET: DogController/Create
+        [Authorize]
         public ActionResult Create()
         {
             return View();
@@ -49,6 +52,9 @@ namespace DogWalker.Controllers
         {
             try
             {
+                // update the dogs OwnerId to the current user's Id 
+                dog.OwnerId = GetCurrentUserId();
+                
                 _dogRepo.AddDog(dog);
                 return RedirectToAction(nameof(Index));
             }
@@ -59,8 +65,11 @@ namespace DogWalker.Controllers
         }
 
         // GET: DogController/Edit/5
+        [Authorize]
         public ActionResult Edit(int id)
         {
+            
+
             Dog dog = _dogRepo.GetDogById(id);
             if (dog ==null)
             {
@@ -86,6 +95,7 @@ namespace DogWalker.Controllers
         }
 
         // GET: DogController/Delete/5
+        [Authorize]
         public ActionResult Delete(int id)
         {
             Dog dog = _dogRepo.GetDogById(id);
