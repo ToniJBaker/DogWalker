@@ -98,7 +98,15 @@ namespace DogWalker.Controllers
         [Authorize]
         public ActionResult Delete(int id)
         {
+            int ownerId = GetCurrentUserId();
+
             Dog dog = _dogRepo.GetDogById(id);
+
+            if (dog == null || dog.OwnerId != ownerId)
+            {
+                return NotFound();
+            }
+
             return View(dog);
         }
 
